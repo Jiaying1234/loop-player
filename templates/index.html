@@ -28,7 +28,8 @@
           <div class="track-icon" aria-hidden="true">♪</div>
           <div class="track-details">
             <h2>{{ track.title }}</h2>
-            <audio controls preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
+            <!-- Play the saved sound repeatedly until the user pauses it. -->
+            <audio controls loop preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
           </div>
         </article>
         {% endfor %}
