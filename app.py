@@ -1,6 +1,9 @@
 from urllib.parse import urlparse
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
+from yt_dlp.utils import DownloadError
+
+from downloader import DOWNLOAD_DIR, download_audio
 
 
 # Create the website.
@@ -22,21 +25,35 @@ def is_tiktok_url(value: str) -> bool:
 # Show the homepage.
 @app.get("/")
 def index():
-    return render_template("index.html")
+    tracks = [
+        {"filename": path.name, "title": path.stem.replace("_", " ")}
+        for path in sorted(DOWNLOAD_DIR.glob("*.mp3"))
+    ]
+    return render_template("index.html", tracks=tracks)
 
 
-# Check a submitted URL and return a placeholder result.
+# Send a saved MP3 to the browser.
+@app.get("/audio/<path:filename>")
+def audio(filename: str):
+    return send_from_directory(DOWNLOAD_DIR, filename)
+
+
+# Check a submitted URL, download it, and return its saved details.
 @app.post("/convert")
 def convert():
     url = request.form.get("url", "")
     if not is_tiktok_url(url):
         return jsonify({"message": "URL not accepted. Try again.", "accepted": False}), 400
 
-    return jsonify({"message": "converting to mp3", "accepted": True})
+    try:
+        track = download_audio(url)
+    except (DownloadError, OSError) as error:
+        app.logger.error("Could not download TikTok audio: %s", error)
+        return jsonify({"message": "Could not convert this URL. Try again.", "accepted": False}), 500
+
+    return jsonify({"accepted": True, "track": track})
 
 
 # Start the website when this file is run.
 if __name__ == "__main__":
     app.run(debug=True)
-
-#cd "C:\Users\bigch\Downloads\Rich\loop-player".\venv\Scripts\python.exe app.py

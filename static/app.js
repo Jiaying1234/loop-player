@@ -35,8 +35,9 @@ urlForm.addEventListener("submit", async (event) => {
   });
   const result = await response.json();
 
-  status.textContent = result.message;
-  if (result.accepted) {
-    status.classList.add("success");
+  if (!result.accepted) {
+    status.textContent = result.message;
+  } else {
+    window.location.reload();
   }
 });
