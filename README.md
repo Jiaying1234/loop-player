@@ -53,7 +53,7 @@ Maybe features in V3:
 
 Roadmap:
 
-M1: input to accept tiktok URL
+M1: input to accept tiktok URL on ui
 
 M2: yt dlp sees URL and converts to MP3 
 
