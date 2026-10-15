@@ -1,3 +1,4 @@
+import json
 from urllib.parse import urlparse
 
 from flask import Flask, jsonify, render_template, request, send_from_directory
@@ -8,6 +9,23 @@ from downloader import DOWNLOAD_DIR, download_audio
 
 # Create the website.
 app = Flask(__name__)
+TRACKS_FILE = DOWNLOAD_DIR / "tracks.json"
+
+
+# Read saved names for downloaded sounds.
+def load_track_names() -> dict[str, str]:
+    if not TRACKS_FILE.exists():
+        return {}
+    with TRACKS_FILE.open(encoding="utf-8") as file:
+        return json.load(file)
+
+
+# Save a name for a downloaded sound.
+def save_track_name(filename: str, name: str) -> None:
+    names = load_track_names()
+    names[filename] = name
+    with TRACKS_FILE.open("w", encoding="utf-8") as file:
+        json.dump(names, file, indent=2)
 
 
 # Check whether the address is an acceptable TikTok URL.
@@ -25,8 +43,12 @@ def is_tiktok_url(value: str) -> bool:
 # Show the homepage.
 @app.get("/")
 def index():
+    names = load_track_names()
     tracks = [
-        {"filename": path.name, "title": path.stem.replace("_", " ")}
+        {
+            "filename": path.name,
+            "title": names.get(path.name, path.stem.replace("_", " ")),
+        }
         for path in sorted(DOWNLOAD_DIR.glob("*.mp3"))
     ]
     return render_template("index.html", tracks=tracks)
@@ -42,15 +64,20 @@ def audio(filename: str):
 @app.post("/convert")
 def convert():
     url = request.form.get("url", "")
+    name = request.form.get("name", "").strip()
     if not is_tiktok_url(url):
         return jsonify({"message": "URL not accepted. Try again.", "accepted": False}), 400
+    if not name:
+        return jsonify({"message": "Please enter a name for this audio.", "accepted": False}), 400
 
     try:
         track = download_audio(url)
+        save_track_name(track["filename"], name)
     except (DownloadError, OSError) as error:
         app.logger.error("Could not download TikTok audio: %s", error)
         return jsonify({"message": "Could not convert this URL. Try again.", "accepted": False}), 500
 
+    track["title"] = name
     return jsonify({"accepted": True, "track": track})
 
 
