@@ -20,8 +20,6 @@ Features in V1:
 
 Maybe features in V2:
 
--a ui that shows a plus button at bottom right
-
 -shuffle option
 
 -able to name saved audio
@@ -51,10 +49,29 @@ Maybe features in V3:
 
 ---
 
-Roadmap:
+Roadmap(v1):
 
 M1: input to accept tiktok URL on ui
 
 M2: yt dlp sees URL and converts to MP3 
 
 M3: MP3 plays on loop (with no noticeable pause)
+
+---
+
+Roadmap(v2)
+M4: upon adding audio asks for renaming
+
+M5: saved audios can be renamed
+
+M6: search bar to find audio
+
+M7: saved audio can be removed
+
+M8: saved audios can be reordered
+
+M9: only one audio can be played at a time
+
+M10: interface similar to tiktok
+
+M11: program can run smoothly on phone
