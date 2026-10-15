@@ -1,36 +1,52 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Tell the browser how to display text and fit the page to a phone screen. -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Set the name shown on the browser tab. -->
     <title>Loop Player</title>
+    <!-- Load the file that controls the page's colors, spacing, and layout. -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
     <main class="app-shell">
       <header class="app-header">
+        <!-- Show the small section label at the top of the page. -->
         <p class="eyebrow">TIKTOK SOUNDS</p>
+        <!-- Show the main Loop Player title. -->
         <h1>Loop Player</h1>
+        <!-- Explain what the app is meant to do. -->
         <p class="subtitle">Save your favorite sounds and keep the best part on repeat.</p>
       </header>
 
       <section class="empty-state" aria-label="Saved sounds">
+        <!-- Show a music note icon while there are no saved sounds. -->
         <div class="empty-icon" aria-hidden="true">♪</div>
+        <!-- Tell the user that no sounds have been added yet. -->
         <h2>No sounds yet</h2>
+        <!-- Tell the user how to begin adding a sound. -->
         <p>Tap the plus button to add a TikTok sound.</p>
       </section>
 
+      <!-- Show the plus button that opens the TikTok address box. -->
       <button class="add-button" id="open-dialog" type="button" aria-label="Add a TikTok URL">
         <span aria-hidden="true">+</span>
       </button>
     </main>
 
+    <!-- Show the box where the user enters a TikTok address. -->
     <dialog class="add-dialog" id="add-dialog" aria-labelledby="dialog-title">
       <form id="url-form" method="post">
+        <!-- Show the button that closes the address box. -->
         <button class="close-button" id="close-dialog" type="button" aria-label="Close">×</button>
+        <!-- Label the box as a place to add a new sound. -->
         <p class="eyebrow">NEW SOUND</p>
+        <!-- Show the title inside the address box. -->
         <h2 id="dialog-title">Add a TikTok URL</h2>
+        <!-- Tell the user what information to enter. -->
         <label for="tiktok-url">TikTok URL</label>
+        <!-- Give the user a place to paste the TikTok address. -->
         <input
           id="tiktok-url"
           name="url"
@@ -39,12 +55,16 @@
           autocomplete="off"
           required
         >
+        <!-- Remind the user which kind of address is accepted. -->
         <p class="hint">Use a URL starting with https://tiktok.com/</p>
+        <!-- Show the success or error message after checking the address. -->
         <p class="status" id="status" role="status" aria-live="polite"></p>
+        <!-- Show the button that sends the address for checking. -->
         <button class="submit-button" type="submit">Add sound</button>
       </form>
     </dialog>
 
+    <!-- Load the file that makes the buttons and address box respond to clicks. -->
     <script src="{{ url_for('static', filename='app.js') }}"></script>
   </body>
 </html>

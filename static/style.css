@@ -1,4 +1,5 @@
 :root {
+  /* Set the app's main colors and text style. */
   color-scheme: dark;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #0e0e12;
@@ -10,12 +11,14 @@
 }
 
 body {
+  /* Add the dark page background. */
   margin: 0;
   min-height: 100vh;
   background: radial-gradient(circle at 50% -10%, #342044 0, #15131b 38%, #0e0e12 70%);
 }
 
 .app-shell {
+  /* Keep the page centered and phone-sized. */
   position: relative;
   width: min(100%, 480px);
   min-height: 100vh;
@@ -24,6 +27,7 @@ body {
 }
 
 .app-header {
+  /* Add space below the page heading. */
   margin-bottom: 64px;
 }
 
@@ -55,6 +59,7 @@ h1 {
 }
 
 .empty-state {
+  /* Style the empty saved-sounds card. */
   padding: 56px 24px;
   border: 1px solid #292633;
   border-radius: 24px;
@@ -83,6 +88,7 @@ h1 {
 }
 
 .add-button {
+  /* Place the plus button in the bottom-right corner. */
   position: fixed;
   right: max(24px, calc((100vw - 480px) / 2 + 24px));
   bottom: 28px;
@@ -111,6 +117,7 @@ input:focus-visible,
 }
 
 .add-dialog {
+  /* Style the TikTok address box. */
   width: min(calc(100% - 32px), 432px);
   padding: 0;
   border: 1px solid #3a3547;
@@ -154,6 +161,7 @@ label {
 }
 
 input {
+  /* Style the address entry field. */
   width: 100%;
   padding: 14px 16px;
   border: 1px solid #494354;
@@ -169,6 +177,7 @@ input {
 }
 
 .status {
+  /* Style the success or error message. */
   min-height: 24px;
   margin-bottom: 16px;
   color: #ff9fbb;
@@ -181,6 +190,7 @@ input {
 }
 
 .submit-button {
+  /* Style the button that submits the address. */
   width: 100%;
   padding: 14px;
   border: 0;

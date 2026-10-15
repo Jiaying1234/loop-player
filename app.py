@@ -3,9 +3,11 @@ from urllib.parse import urlparse
 from flask import Flask, jsonify, render_template, request
 
 
+# Create the website.
 app = Flask(__name__)
 
 
+# Check whether the address is an acceptable TikTok URL.
 def is_tiktok_url(value: str) -> bool:
     """Return whether value is an HTTPS URL hosted on tiktok.com."""
     parsed = urlparse(value.strip())
@@ -17,11 +19,13 @@ def is_tiktok_url(value: str) -> bool:
     )
 
 
+# Show the homepage.
 @app.get("/")
 def index():
     return render_template("index.html")
 
 
+# Check a submitted URL and return a placeholder result.
 @app.post("/convert")
 def convert():
     url = request.form.get("url", "")
@@ -31,6 +35,7 @@ def convert():
     return jsonify({"message": "converting to mp3", "accepted": True})
 
 
+# Start the website when this file is run.
 if __name__ == "__main__":
     app.run(debug=True)
 
