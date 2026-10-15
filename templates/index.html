@@ -20,6 +20,21 @@
         <p class="subtitle">Save your favorite sounds and keep the best part on repeat.</p>
       </header>
 
+      {% if tracks %}
+      <!-- Show every MP3 that has already been saved. -->
+      <section class="track-list" aria-label="Saved sounds">
+        {% for track in tracks %}
+        <article class="track-card">
+          <div class="track-icon" aria-hidden="true">♪</div>
+          <div class="track-details">
+            <h2>{{ track.title }}</h2>
+            <audio controls preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
+          </div>
+        </article>
+        {% endfor %}
+      </section>
+      {% else %}
+      <!-- Show a message before the first sound is saved. -->
       <section class="empty-state" aria-label="Saved sounds">
         <!-- Show a music note icon while there are no saved sounds. -->
         <div class="empty-icon" aria-hidden="true">♪</div>
@@ -28,6 +43,7 @@
         <!-- Tell the user how to begin adding a sound. -->
         <p>Tap the plus button to add a TikTok sound.</p>
       </section>
+      {% endif %}
 
       <!-- Show the plus button that opens the TikTok address box. -->
       <button class="add-button" id="open-dialog" type="button" aria-label="Add a TikTok URL">
