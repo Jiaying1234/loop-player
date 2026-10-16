@@ -13,15 +13,27 @@
     <main class="app-shell">
       <header class="app-header">
         <div class="header-row">
-          <!-- Show the small section label at the top of the page. -->
-          <p class="eyebrow">TIKTOK SOUNDS</p>
           <div class="header-actions">
             <!-- Open the song search bar. -->
-            <button class="icon-button" id="search-button" type="button" aria-label="Search saved sounds">🔍</button>
+            <button class="icon-button" id="search-button" type="button" aria-label="Search saved sounds">
+              <svg class="top-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="5.8"></circle>
+                <path d="m15.2 15.2 4.3 4.3"></path>
+              </svg>
+            </button>
             <!-- Turn on rename controls for saved sounds. -->
-            <button class="icon-button" id="edit-button" type="button" aria-label="Rename saved sounds">✎</button>
+            <button class="icon-button" id="edit-button" type="button" aria-label="Rename saved sounds">
+              <svg class="top-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m4 16.8-.8 3.8 3.8-.8L18.7 8.1a2.7 2.7 0 0 0-3.8-3.8L4 16.8Z"></path>
+                <path d="m13.7 5.3 5 5"></path>
+              </svg>
+            </button>
             <!-- Turn on delete controls for saved sounds. -->
-            <button class="icon-button" id="delete-button" type="button" aria-label="Delete saved sounds">🗑</button>
+            <button class="icon-button" id="delete-button" type="button" aria-label="Delete saved sounds">
+              <svg class="top-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4.5 7.5h15M9 7.5V5h6v2.5M7 7.5l.8 12h8.4l.8-12M10 11v5.5M14 11v5.5"></path>
+              </svg>
+            </button>
           </div>
         </div>
         <!-- Search saved songs by name. -->
@@ -29,10 +41,6 @@
           <input id="search-input" type="search" placeholder="Search songs..." autocomplete="off">
           <button id="clear-search" type="button" aria-label="Cancel search">Cancel</button>
         </div>
-        <!-- Show the main Loop Player title. -->
-        <h1>Loop Player</h1>
-        <!-- Explain what the app is meant to do. -->
-        <p class="subtitle">Save your favorite sounds and keep the best part on repeat.</p>
       </header>
 
       {% if tracks %}
@@ -40,7 +48,10 @@
       <section class="track-list" aria-label="Saved sounds">
         {% for track in tracks %}
         <article class="track-card" data-title="{{ track.title|lower }}">
-          <div class="track-icon" aria-hidden="true">♪</div>
+          <!-- Play or stop this sound from the black square. -->
+          <button class="play-button" type="button" aria-label="Play {{ track.title }}">
+            <span class="play-icon" aria-hidden="true"></span>
+          </button>
           <div class="track-details">
             <h2>{{ track.title }}</h2>
             <!-- Rename this sound while edit mode is active. -->
@@ -51,8 +62,9 @@
             </form>
             <!-- Delete this sound while delete mode is active. -->
             <button class="delete-track-button" type="button" data-filename="{{ track.filename }}">Delete</button>
-            <!-- Play the saved sound repeatedly until the user pauses it. -->
-            <audio controls loop preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
+            <!-- Show the sound length without browser audio controls. -->
+            <p class="track-duration" data-duration>--:--</p>
+            <audio class="audio-player" loop preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
           </div>
         </article>
         {% endfor %}
@@ -71,9 +83,11 @@
       </section>
       {% endif %}
 
-      <!-- Show the plus button that opens the TikTok address box. -->
+      <!-- Open the box for adding a sound from the bottom-right corner. -->
       <button class="add-button" id="open-dialog" type="button" aria-label="Add a TikTok URL">
-        <span aria-hidden="true">+</span>
+        <svg class="top-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14M5 12h14"></path>
+        </svg>
       </button>
     </main>
 

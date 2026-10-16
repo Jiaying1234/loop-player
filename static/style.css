@@ -1,9 +1,9 @@
 :root {
   /* Set the app's main colors and text style. */
-  color-scheme: dark;
+  color-scheme: light;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #0e0e12;
-  color: #f7f7f8;
+  background: #fff;
+  color: #161616;
 }
 
 * {
@@ -14,7 +14,7 @@ body {
   /* Add the dark page background. */
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(circle at 50% -10%, #342044 0, #15131b 38%, #0e0e12 70%);
+  background: #fff;
 }
 
 .app-shell {
@@ -23,12 +23,12 @@ body {
   width: min(100%, 480px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 48px 24px 120px;
+  padding: 18px 20px 40px;
 }
 
 .app-header {
   /* Add space below the page heading. */
-  margin-bottom: 64px;
+  margin-bottom: 22px;
 }
 
 .header-row {
@@ -47,13 +47,27 @@ body {
 }
 
 .icon-button {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
   border: 0;
-  border-radius: 10px;
-  background: #31213c;
-  color: #f7f7f8;
+  border-radius: 50%;
+  background: transparent;
+  color: #161616;
   cursor: pointer;
-  font-size: 1.3rem;
-  padding: 8px 11px;
+  padding: 8px;
+}
+
+.top-icon {
+  display: block;
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .search-row {
@@ -115,9 +129,9 @@ h1 {
 .empty-state {
   /* Style the empty saved-sounds card. */
   padding: 56px 24px;
-  border: 1px solid #292633;
-  border-radius: 24px;
-  background: rgb(28 26 36 / 70%);
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fff;
   text-align: center;
 }
 
@@ -143,17 +157,15 @@ h1 {
 
 .track-list {
   display: grid;
-  gap: 16px;
+  gap: 11px;
 }
 
 .track-card {
   display: flex;
   gap: 14px;
   align-items: center;
-  padding: 16px;
-  border: 1px solid #292633;
-  border-radius: 20px;
-  background: rgb(28 26 36 / 70%);
+  padding: 0;
+  background: #fff;
 }
 
 .track-card[hidden],
@@ -167,16 +179,33 @@ h1 {
   text-align: center;
 }
 
-.track-icon {
+.play-button {
   display: grid;
-  flex: 0 0 48px;
-  width: 48px;
-  height: 48px;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
   place-items: center;
-  border-radius: 14px;
-  background: #31213c;
-  color: #ff4f81;
-  font-size: 1.5rem;
+  border: 0;
+  border-radius: 2px;
+  background: #000;
+  cursor: pointer;
+}
+
+.play-icon {
+  width: 0;
+  height: 0;
+  margin-left: 4px;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 13px solid #fff;
+}
+
+.play-button.is-playing .play-icon {
+  width: 12px;
+  height: 17px;
+  margin-left: 0;
+  border: 0;
+  background: linear-gradient(to right, #fff 0 4px, transparent 4px 8px, #fff 8px 12px);
 }
 
 .track-details {
@@ -185,11 +214,17 @@ h1 {
 }
 
 .track-details h2 {
-  margin-bottom: 10px;
+  margin-bottom: 2px;
   overflow: hidden;
-  font-size: 1rem;
+  font-size: 0.92rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.track-duration {
+  margin-bottom: 0;
+  color: #8a8a8a;
+  font-size: 0.85rem;
 }
 
 .rename-form {
@@ -240,30 +275,8 @@ h1 {
   display: block;
 }
 
-audio {
-  width: 100%;
-  height: 32px;
-}
-
-.add-button {
-  /* Place the plus button in the bottom-right corner. */
-  position: fixed;
-  right: max(24px, calc((100vw - 480px) / 2 + 24px));
-  bottom: 28px;
-  width: 64px;
-  height: 64px;
-  border: 0;
-  border-radius: 50%;
-  background: #ff2f72;
-  box-shadow: 0 12px 30px rgb(255 47 114 / 35%);
-  color: white;
-  cursor: pointer;
-  font-size: 2.25rem;
-  line-height: 1;
-}
-
-.add-button:hover {
-  background: #ff4f81;
+.audio-player {
+  display: none;
 }
 
 .add-button:focus-visible,
@@ -272,6 +285,23 @@ input:focus-visible,
 .submit-button:focus-visible {
   outline: 3px solid #ff9fbb;
   outline-offset: 3px;
+}
+
+.add-button {
+  /* Place the add-sound button in the bottom-right corner. */
+  position: fixed;
+  right: max(24px, calc((100vw - 480px) / 2 + 20px));
+  bottom: 24px;
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #161616;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 5px 16px rgb(0 0 0 / 20%);
 }
 
 .add-dialog {

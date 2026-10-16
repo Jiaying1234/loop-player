@@ -15,9 +15,25 @@ const trackCards = document.querySelectorAll(".track-card");
 const searchEmpty = document.querySelector("#search-empty");
 const deleteButton = document.querySelector("#delete-button");
 const deleteTrackButtons = document.querySelectorAll(".delete-track-button");
+const playButtons = document.querySelectorAll(".play-button");
+
+// Display a duration as minutes and seconds.
+function formatDuration(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${remainingSeconds}`;
+}
 
 // Pause every other sound when one starts playing.
 audioPlayers.forEach((audio) => {
+  const card = audio.closest(".track-card");
+  const duration = card.querySelector("[data-duration]");
+  const playButton = card.querySelector(".play-button");
+
+  audio.addEventListener("loadedmetadata", () => {
+    duration.textContent = formatDuration(audio.duration);
+  });
+
   audio.addEventListener("play", () => {
     audioPlayers.forEach((otherAudio) => {
       if (otherAudio !== audio) {
@@ -25,11 +41,26 @@ audioPlayers.forEach((audio) => {
         otherAudio.currentTime = 0;
       }
     });
+    playButtons.forEach((button) => button.classList.remove("is-playing"));
+    playButton.classList.add("is-playing");
   });
 
   // Reset this sound when its own play button is pressed to stop it.
   audio.addEventListener("pause", () => {
     audio.currentTime = 0;
+    playButton.classList.remove("is-playing");
+  });
+});
+
+// Let the black square control playback without showing browser controls.
+playButtons.forEach((button, index) => {
+  const audio = audioPlayers[index];
+  button.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play();
+    } else {
+      audio.pause();
+    }
   });
 });
 
@@ -113,7 +144,9 @@ renameForms.forEach((form) => {
     const result = await response.json();
     if (result.accepted) {
       // Update this title while keeping rename mode open.
-      form.closest(".track-card").querySelector("h2").textContent = form.elements.name.value;
+      const card = form.closest(".track-card");
+      card.querySelector("h2").textContent = form.elements.name.value;
+      card.dataset.title = form.elements.name.value.toLowerCase();
       form.querySelector("button").blur();
     } else {
       window.alert(result.message);
