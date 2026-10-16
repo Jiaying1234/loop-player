@@ -28,6 +28,14 @@ def save_track_name(filename: str, name: str) -> None:
         json.dump(names, file, indent=2)
 
 
+# Remove a sound name from saved metadata.
+def remove_track_name(filename: str) -> None:
+    names = load_track_names()
+    names.pop(filename, None)
+    with TRACKS_FILE.open("w", encoding="utf-8") as file:
+        json.dump(names, file, indent=2)
+
+
 # Check whether the address is an acceptable TikTok URL.
 def is_tiktok_url(value: str) -> bool:
     """Return whether value is an HTTPS URL hosted on tiktok.com."""
@@ -61,8 +69,24 @@ def index():
 # Send a saved MP3 to the browser.
 @app.get("/audio/<path:filename>")
 def audio(filename: str):
-    
     return send_from_directory(DOWNLOAD_DIR, filename)
+
+
+# Delete one saved sound.
+@app.post("/delete")
+def delete():
+    filename = request.form.get("filename", "")
+    if not filename or not (DOWNLOAD_DIR / filename).is_file() or "/" in filename or "\\" in filename:
+        return jsonify({"message": "Audio not found.", "accepted": False}), 404
+
+    try:
+        (DOWNLOAD_DIR / filename).unlink()
+        remove_track_name(filename)
+    except OSError as error:
+        app.logger.error("Could not delete audio: %s", error)
+        return jsonify({"message": "Could not delete this audio. Try again.", "accepted": False}), 500
+
+    return jsonify({"accepted": True})
 
 
 # Rename one saved sound.

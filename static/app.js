@@ -13,6 +13,8 @@ const searchInput = document.querySelector("#search-input");
 const clearSearchButton = document.querySelector("#clear-search");
 const trackCards = document.querySelectorAll(".track-card");
 const searchEmpty = document.querySelector("#search-empty");
+const deleteButton = document.querySelector("#delete-button");
+const deleteTrackButtons = document.querySelectorAll(".delete-track-button");
 
 // Pause every other sound when one starts playing.
 audioPlayers.forEach((audio) => {
@@ -66,6 +68,33 @@ clearSearchButton.addEventListener("click", () => {
 // Show or hide the rename controls.
 editButton.addEventListener("click", () => {
   document.body.classList.toggle("editing");
+});
+
+// Show or hide the delete controls.
+deleteButton.addEventListener("click", () => {
+  document.body.classList.toggle("deleting");
+});
+
+// Delete a sound after the user confirms the action.
+deleteTrackButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    if (!window.confirm("Delete this saved audio?")) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("filename", button.dataset.filename);
+    const response = await fetch("/delete", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+    if (result.accepted) {
+      window.location.reload();
+    } else {
+      window.alert(result.message);
+    }
+  });
 });
 
 // Save a renamed sound and refresh its displayed name.
