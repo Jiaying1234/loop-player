@@ -12,8 +12,12 @@
   <body>
     <main class="app-shell">
       <header class="app-header">
-        <!-- Show the small section label at the top of the page. -->
-        <p class="eyebrow">TIKTOK SOUNDS</p>
+        <div class="header-row">
+          <!-- Show the small section label at the top of the page. -->
+          <p class="eyebrow">TIKTOK SOUNDS</p>
+          <!-- Turn on rename controls for saved sounds. -->
+          <button class="edit-button" id="edit-button" type="button" aria-label="Rename saved sounds">✎</button>
+        </div>
         <!-- Show the main Loop Player title. -->
         <h1>Loop Player</h1>
         <!-- Explain what the app is meant to do. -->
@@ -28,6 +32,12 @@
           <div class="track-icon" aria-hidden="true">♪</div>
           <div class="track-details">
             <h2>{{ track.title }}</h2>
+            <!-- Rename this sound while edit mode is active. -->
+            <form class="rename-form" method="post">
+              <input type="hidden" name="filename" value="{{ track.filename }}">
+              <input name="name" type="text" value="{{ track.title }}" maxlength="100" required>
+              <button type="submit">Save</button>
+            </form>
             <!-- Play the saved sound repeatedly until the user pauses it. -->
             <audio controls loop preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
           </div>
@@ -61,6 +71,9 @@
         <p class="eyebrow">NEW SOUND</p>
         <!-- Show the title inside the address box. -->
         <h2 id="dialog-title">Add a TikTok URL</h2>
+        <!-- Ask the user what to call the saved audio. -->
+        <label for="audio-name">Audio name</label>
+        <input id="audio-name" name="name" type="text" placeholder="e.g. Dance practice" maxlength="100" autocomplete="off" required>
         <!-- Tell the user what information to enter. -->
         <label for="tiktok-url">TikTok URL</label>
         <!-- Give the user a place to paste the TikTok address. -->

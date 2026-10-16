@@ -4,6 +4,30 @@ const closeDialogButton = document.querySelector("#close-dialog");
 const urlForm = document.querySelector("#url-form");
 const urlInput = document.querySelector("#tiktok-url");
 const status = document.querySelector("#status");
+const editButton = document.querySelector("#edit-button");
+const renameForms = document.querySelectorAll(".rename-form");
+
+// Show or hide the rename controls.
+editButton.addEventListener("click", () => {
+  document.body.classList.toggle("editing");
+});
+
+// Save a renamed sound and refresh its displayed name.
+renameForms.forEach((form) => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const response = await fetch("/rename", {
+      method: "POST",
+      body: new FormData(form),
+    });
+    const result = await response.json();
+    if (result.accepted) {
+      window.location.reload();
+    } else {
+      window.alert(result.message);
+    }
+  });
+});
 
 // Open the address box from the plus button.
 openDialogButton.addEventListener("click", () => {

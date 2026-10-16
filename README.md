@@ -75,3 +75,7 @@ M9: only one audio can be played at a time
 M10: interface similar to tiktok
 
 M11: program can run smoothly on phone
+
+Known Issues: 
+-audios are not sorted by latest
+-two audios can be played simultaneously 
