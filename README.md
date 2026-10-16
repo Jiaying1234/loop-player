@@ -79,3 +79,4 @@ Known Issues:
 -two audios can be played simultaneously 
 -timestamp is not restarted for previous audio
 -timestamp is not restarted when pausing current audio
+-downloads can fail on some networks (HTTP 403). try a different network or wait.

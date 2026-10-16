@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from urllib.parse import urlparse
 
 from flask import Flask, jsonify, render_template, request, send_from_directory
@@ -10,6 +11,7 @@ from downloader import DOWNLOAD_DIR, download_audio
 # Create the website.
 app = Flask(__name__)
 TRACKS_FILE = DOWNLOAD_DIR / "tracks.json"
+ORDER_FILE = DOWNLOAD_DIR / "track_order.json"
 
 
 # Read saved names for downloaded sounds.
@@ -36,6 +38,20 @@ def remove_track_name(filename: str) -> None:
         json.dump(names, file, indent=2)
 
 
+# Read the saved order of the sounds.
+def load_track_order() -> list[str]:
+    if not ORDER_FILE.exists():
+        return []
+    with ORDER_FILE.open(encoding="utf-8") as file:
+        return json.load(file)
+
+
+# Save the order of the sounds.
+def save_track_order(filenames: list[str]) -> None:
+    with ORDER_FILE.open("w", encoding="utf-8") as file:
+        json.dump(filenames, file, indent=2)
+
+
 # Check whether the address is an acceptable TikTok URL.
 def is_tiktok_url(value: str) -> bool:
     """Return whether value is an HTTPS URL hosted on tiktok.com."""
@@ -52,16 +68,27 @@ def is_tiktok_url(value: str) -> bool:
 @app.get("/")
 def index():
     names = load_track_names()
+    audio_files = {
+        path.name: path for path in DOWNLOAD_DIR.glob("*.mp3")
+    }
+    newest_first = sorted(
+        audio_files,
+        key=lambda filename: audio_files[filename].stat().st_mtime,
+        reverse=True,
+    )
+    saved_order = load_track_order()
+    ordered_filenames = [
+        filename for filename in saved_order if filename in audio_files
+    ]
+    ordered_filenames.extend(
+        filename for filename in newest_first if filename not in ordered_filenames
+    )
     tracks = [
         {
-            "filename": path.name,
-            "title": names.get(path.name, path.stem.replace("_", " ")),
+            "filename": filename,
+            "title": names.get(filename, Path(filename).stem.replace("_", " ")),
         }
-        for path in sorted(
-            DOWNLOAD_DIR.glob("*.mp3"),
-            key=lambda audio_path: audio_path.stat().st_mtime,
-            reverse=True,
-        )
+        for filename in ordered_filenames
     ]
     return render_template("index.html", tracks=tracks)
 
@@ -82,9 +109,31 @@ def delete():
     try:
         (DOWNLOAD_DIR / filename).unlink()
         remove_track_name(filename)
+        save_track_order([item for item in load_track_order() if item != filename])
     except OSError as error:
         app.logger.error("Could not delete audio: %s", error)
         return jsonify({"message": "Could not delete this audio. Try again.", "accepted": False}), 500
+
+    return jsonify({"accepted": True})
+
+
+# Save a new order for the sounds.
+@app.post("/reorder")
+def reorder():
+    filenames = request.get_json(silent=True)
+    current_files = {path.name for path in DOWNLOAD_DIR.glob("*.mp3")}
+    if (
+        not isinstance(filenames, list)
+        or any(not isinstance(filename, str) or "/" in filename or "\\" in filename for filename in filenames)
+        or set(filenames) != current_files
+    ):
+        return jsonify({"message": "Invalid audio order.", "accepted": False}), 400
+
+    try:
+        save_track_order(filenames)
+    except OSError as error:
+        app.logger.error("Could not save audio order: %s", error)
+        return jsonify({"message": "Could not save the audio order. Try again.", "accepted": False}), 500
 
     return jsonify({"accepted": True})
 
@@ -121,6 +170,10 @@ def convert():
     try:
         track = download_audio(url)
         save_track_name(track["filename"], name)
+        save_track_order(
+            [track["filename"]]
+            + [filename for filename in load_track_order() if filename != track["filename"]]
+        )
     except (DownloadError, OSError) as error:
         app.logger.error("Could not download TikTok audio: %s", error)
         return jsonify({"message": "Could not convert this URL. Try again.", "accepted": False}), 500
