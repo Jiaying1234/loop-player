@@ -16,6 +16,8 @@ const searchEmpty = document.querySelector("#search-empty");
 const deleteButton = document.querySelector("#delete-button");
 const deleteTrackButtons = document.querySelectorAll(".delete-track-button");
 const playButtons = document.querySelectorAll(".play-button");
+const reorderButton = document.querySelector("#reorder-button");
+const saveOrderButton = document.querySelector("#save-order-button");
 
 // Display a duration as minutes and seconds.
 function formatDuration(seconds) {
@@ -23,6 +25,52 @@ function formatDuration(seconds) {
   const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, "0");
   return `${minutes}:${remainingSeconds}`;
 }
+
+// Start reorder mode and make each sound draggable.
+reorderButton.addEventListener("click", () => {
+  document.body.classList.add("reordering");
+  trackCards.forEach((card) => {
+    card.draggable = true;
+  });
+});
+
+let draggedCard;
+
+// Track the sound currently being dragged.
+trackCards.forEach((card) => {
+  card.addEventListener("dragstart", () => {
+    draggedCard = card;
+    card.classList.add("dragging");
+  });
+  card.addEventListener("dragend", () => {
+    card.classList.remove("dragging");
+  });
+  card.addEventListener("dragover", (event) => {
+    event.preventDefault();
+    if (draggedCard && draggedCard !== card) {
+      const afterCard = event.clientY > card.getBoundingClientRect().top + card.offsetHeight / 2;
+      card.parentNode.insertBefore(draggedCard, afterCard ? card.nextSibling : card);
+    }
+  });
+});
+
+// Save the dragged order and leave reorder mode.
+saveOrderButton.addEventListener("click", async () => {
+  const filenames = [...document.querySelectorAll(".track-card")].map(
+    (card) => card.dataset.filename,
+  );
+  const response = await fetch("/reorder", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(filenames),
+  });
+  const result = await response.json();
+  if (result.accepted) {
+    window.location.reload();
+  } else {
+    window.alert(result.message);
+  }
+});
 
 // Pause every other sound when one starts playing.
 audioPlayers.forEach((audio) => {

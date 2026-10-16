@@ -46,6 +46,23 @@ body {
   gap: 8px;
 }
 
+.save-order-button {
+  display: none;
+  margin: 12px 0 0 auto;
+  border: 0;
+  border-radius: 8px;
+  background: #161616;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 14px;
+}
+
+.reordering .save-order-button {
+  display: block;
+}
+
 .icon-button {
   display: grid;
   width: 38px;
@@ -166,6 +183,14 @@ h1 {
   align-items: center;
   padding: 0;
   background: #fff;
+}
+
+.reordering .track-card {
+  cursor: grab;
+}
+
+.reordering .track-card.dragging {
+  opacity: 0.45;
 }
 
 .track-card[hidden],
