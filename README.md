@@ -34,6 +34,8 @@ Maybe features in V2:
 
 -open browser on phone (while labtop runs the program)
 
+-desktop shortcut
+
 ---
 
 Maybe features in V3:
@@ -74,9 +76,17 @@ M9: saved audios can be reordered
 
 M10: program can run smoothly on phone
 
+M11: desktop shortcut
+
 Known Issues: 
 -audios are not sorted by latest
 -two audios can be played simultaneously 
 -timestamp is not restarted for previous audio
 -timestamp is not restarted when pausing current audio
 -downloads can fail on some networks (HTTP 403). try a different network or wait.
+
+Run without VS Code:
+
+- Double-click `run_loop_player.bat` to start the app and open it in Chrome.
+- Create a shortcut to `run_loop_player.bat` and pin that shortcut to the taskbar.
+- Close the command window to stop the app.
