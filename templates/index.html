@@ -20,6 +20,8 @@
             <button class="icon-button" id="search-button" type="button" aria-label="Search saved sounds">🔍</button>
             <!-- Turn on rename controls for saved sounds. -->
             <button class="icon-button" id="edit-button" type="button" aria-label="Rename saved sounds">✎</button>
+            <!-- Turn on delete controls for saved sounds. -->
+            <button class="icon-button" id="delete-button" type="button" aria-label="Delete saved sounds">🗑</button>
           </div>
         </div>
         <!-- Search saved songs by name. -->
@@ -47,6 +49,8 @@
               <input name="name" type="text" value="{{ track.title }}" maxlength="100" required>
               <button type="submit">Save</button>
             </form>
+            <!-- Delete this sound while delete mode is active. -->
+            <button class="delete-track-button" type="button" data-filename="{{ track.filename }}">Delete</button>
             <!-- Play the saved sound repeatedly until the user pauses it. -->
             <audio controls loop preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
           </div>
@@ -54,7 +58,7 @@
         {% endfor %}
       </section>
       <!-- Show this when a search has no matching songs. -->
-      <p class="search-empty" id="search-empty">No matching songs.</p>
+      <p class="search-empty" id="search-empty" hidden>No matching songs.</p>
       {% else %}
       <!-- Show a message before the first sound is saved. -->
       <section class="empty-state" aria-label="Saved sounds">

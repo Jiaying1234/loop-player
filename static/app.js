@@ -13,6 +13,8 @@ const searchInput = document.querySelector("#search-input");
 const clearSearchButton = document.querySelector("#clear-search");
 const trackCards = document.querySelectorAll(".track-card");
 const searchEmpty = document.querySelector("#search-empty");
+const deleteButton = document.querySelector("#delete-button");
+const deleteTrackButtons = document.querySelectorAll(".delete-track-button");
 
 // Pause every other sound when one starts playing.
 audioPlayers.forEach((audio) => {
@@ -65,7 +67,39 @@ clearSearchButton.addEventListener("click", () => {
 
 // Show or hide the rename controls.
 editButton.addEventListener("click", () => {
-  document.body.classList.toggle("editing");
+  if (document.body.classList.contains("editing")) {
+    window.location.reload();
+    return;
+  }
+  document.body.classList.add("editing");
+});
+
+// Show or hide the delete controls.
+deleteButton.addEventListener("click", () => {
+  document.body.classList.toggle("deleting");
+});
+
+// Delete a sound after the user confirms the action.
+deleteTrackButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    if (!window.confirm("Delete this saved audio?")) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("filename", button.dataset.filename);
+    const response = await fetch("/delete", {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+    if (result.accepted) {
+      // Remove the deleted sound while keeping delete mode open.
+      button.closest(".track-card").remove();
+    } else {
+      window.alert(result.message);
+    }
+  });
 });
 
 // Save a renamed sound and refresh its displayed name.
@@ -78,7 +112,9 @@ renameForms.forEach((form) => {
     });
     const result = await response.json();
     if (result.accepted) {
-      window.location.reload();
+      // Update this title while keeping rename mode open.
+      form.closest(".track-card").querySelector("h2").textContent = form.elements.name.value;
+      form.querySelector("button").blur();
     } else {
       window.alert(result.message);
     }
