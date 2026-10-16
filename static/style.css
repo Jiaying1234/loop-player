@@ -225,6 +225,7 @@ h1 {
 }
 
 .rename-form button {
+  display: none;
   border: 0;
   border-radius: 8px;
   background: #ff2f72;
@@ -233,6 +234,10 @@ h1 {
   font: inherit;
   font-weight: 700;
   padding: 8px 10px;
+}
+
+.rename-form:focus-within button {
+  display: block;
 }
 
 audio {

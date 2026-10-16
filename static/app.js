@@ -67,7 +67,11 @@ clearSearchButton.addEventListener("click", () => {
 
 // Show or hide the rename controls.
 editButton.addEventListener("click", () => {
-  document.body.classList.toggle("editing");
+  if (document.body.classList.contains("editing")) {
+    window.location.reload();
+    return;
+  }
+  document.body.classList.add("editing");
 });
 
 // Show or hide the delete controls.
@@ -108,7 +112,9 @@ renameForms.forEach((form) => {
     });
     const result = await response.json();
     if (result.accepted) {
-      window.location.reload();
+      // Update this title while keeping rename mode open.
+      form.closest(".track-card").querySelector("h2").textContent = form.elements.name.value;
+      form.querySelector("button").blur();
     } else {
       window.alert(result.message);
     }
