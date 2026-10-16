@@ -70,12 +70,12 @@ M7: saved audio can be removed
 
 M8: saved audios can be reordered
 
-M9: only one audio can be played at a time
+M9: interface similar to tiktok
 
-M10: interface similar to tiktok
-
-M11: program can run smoothly on phone
+M10: program can run smoothly on phone
 
 Known Issues: 
 -audios are not sorted by latest
 -two audios can be played simultaneously 
+-timestamp is not restarted for previous audio
+-timestamp is not restarted when pausing current audio

@@ -41,7 +41,12 @@ body {
   margin-bottom: 0;
 }
 
-.edit-button {
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-button {
   border: 0;
   border-radius: 10px;
   background: #31213c;
@@ -49,6 +54,35 @@ body {
   cursor: pointer;
   font-size: 1.3rem;
   padding: 8px 11px;
+}
+
+.search-row {
+  display: none;
+  position: relative;
+  margin-top: 20px;
+}
+
+.search-row.search-visible {
+  display: block;
+}
+
+.search-row input {
+  /* Leave room for the clear icon and Cancel button. */
+  padding-right: 80px;
+}
+
+
+.search-row button {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  color: #aaa6b5;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transform: translateY(-50%);
 }
 
 .eyebrow {
@@ -120,6 +154,17 @@ h1 {
   border: 1px solid #292633;
   border-radius: 20px;
   background: rgb(28 26 36 / 70%);
+}
+
+.track-card[hidden],
+.search-empty[hidden] {
+  display: none;
+}
+
+.search-empty {
+  margin-top: 24px;
+  color: #aaa6b5;
+  text-align: center;
 }
 
 .track-icon {
