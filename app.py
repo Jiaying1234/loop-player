@@ -1,4 +1,7 @@
 import json
+import os
+import subprocess
+import threading
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -182,6 +185,16 @@ def convert():
     return jsonify({"accepted": True, "track": track})
 
 
+# Open Chrome shortly after the local server starts.
+def open_chrome():
+    chrome = os.environ.get("LOOP_PLAYER_CHROME")
+    if chrome:
+        subprocess.Popen([chrome, "http://127.0.0.1:5000"])
+
+
 # Start the website when this file is run.
 if __name__ == "__main__":
-    app.run(debug=True)
+    launched_from_shortcut = bool(os.environ.get("LOOP_PLAYER_CHROME"))
+    if launched_from_shortcut:
+        threading.Timer(1, open_chrome).start()
+    app.run(debug=not launched_from_shortcut)
