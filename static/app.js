@@ -7,6 +7,12 @@ const status = document.querySelector("#status");
 const editButton = document.querySelector("#edit-button");
 const renameForms = document.querySelectorAll(".rename-form");
 const audioPlayers = document.querySelectorAll("audio");
+const searchButton = document.querySelector("#search-button");
+const searchRow = document.querySelector("#search-row");
+const searchInput = document.querySelector("#search-input");
+const clearSearchButton = document.querySelector("#clear-search");
+const trackCards = document.querySelectorAll(".track-card");
+const searchEmpty = document.querySelector("#search-empty");
 
 // Pause every other sound when one starts playing.
 audioPlayers.forEach((audio) => {
@@ -23,6 +29,38 @@ audioPlayers.forEach((audio) => {
   audio.addEventListener("pause", () => {
     audio.currentTime = 0;
   });
+});
+
+// Open the search bar and let the user type.
+searchButton.addEventListener("click", () => {
+  searchRow.classList.add("search-visible");
+  searchInput.focus();
+});
+
+// Show only songs whose names match the search text.
+searchInput.addEventListener("input", () => {
+  const query = searchInput.value.trim().toLowerCase();
+  let matches = 0;
+
+  trackCards.forEach((card) => {
+    const matchesSearch = card.dataset.title.includes(query);
+    card.hidden = !matchesSearch;
+    if (matchesSearch) {
+      matches += 1;
+    }
+  });
+
+  searchEmpty.hidden = matches > 0 || query === "";
+});
+
+// Clear the search and return to the full song list.
+clearSearchButton.addEventListener("click", () => {
+  searchInput.value = "";
+  trackCards.forEach((card) => {
+    card.hidden = false;
+  });
+  searchEmpty.hidden = true;
+  searchRow.classList.remove("search-visible");
 });
 
 // Show or hide the rename controls.

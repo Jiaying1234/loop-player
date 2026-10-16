@@ -15,8 +15,17 @@
         <div class="header-row">
           <!-- Show the small section label at the top of the page. -->
           <p class="eyebrow">TIKTOK SOUNDS</p>
-          <!-- Turn on rename controls for saved sounds. -->
-          <button class="edit-button" id="edit-button" type="button" aria-label="Rename saved sounds">✎</button>
+          <div class="header-actions">
+            <!-- Open the song search bar. -->
+            <button class="icon-button" id="search-button" type="button" aria-label="Search saved sounds">🔍</button>
+            <!-- Turn on rename controls for saved sounds. -->
+            <button class="icon-button" id="edit-button" type="button" aria-label="Rename saved sounds">✎</button>
+          </div>
+        </div>
+        <!-- Search saved songs by name. -->
+        <div class="search-row" id="search-row">
+          <input id="search-input" type="search" placeholder="Search songs..." autocomplete="off">
+          <button id="clear-search" type="button" aria-label="Cancel search">Cancel</button>
         </div>
         <!-- Show the main Loop Player title. -->
         <h1>Loop Player</h1>
@@ -28,7 +37,7 @@
       <!-- Show every MP3 that has already been saved. -->
       <section class="track-list" aria-label="Saved sounds">
         {% for track in tracks %}
-        <article class="track-card">
+        <article class="track-card" data-title="{{ track.title|lower }}">
           <div class="track-icon" aria-hidden="true">♪</div>
           <div class="track-details">
             <h2>{{ track.title }}</h2>
@@ -44,6 +53,8 @@
         </article>
         {% endfor %}
       </section>
+      <!-- Show this when a search has no matching songs. -->
+      <p class="search-empty" id="search-empty">No matching songs.</p>
       {% else %}
       <!-- Show a message before the first sound is saved. -->
       <section class="empty-state" aria-label="Saved sounds">
