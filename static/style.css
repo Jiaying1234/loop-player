@@ -31,6 +31,26 @@ body {
   margin-bottom: 64px;
 }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-row .eyebrow {
+  margin-bottom: 0;
+}
+
+.edit-button {
+  border: 0;
+  border-radius: 10px;
+  background: #31213c;
+  color: #f7f7f8;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 8px 11px;
+}
+
 .eyebrow {
   margin: 0 0 10px;
   color: #ff4f81;
@@ -125,6 +145,32 @@ h1 {
   font-size: 1rem;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.rename-form {
+  display: none;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.editing .rename-form {
+  display: flex;
+}
+
+.rename-form input {
+  min-width: 0;
+  padding: 8px 10px;
+}
+
+.rename-form button {
+  border: 0;
+  border-radius: 8px;
+  background: #ff2f72;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 8px 10px;
 }
 
 audio {
