@@ -79,3 +79,5 @@ M11: program can run smoothly on phone
 Known Issues: 
 -audios are not sorted by latest
 -two audios can be played simultaneously 
+-timestamp is not restarted for previous audio
+-timestamp is not restarted when pausing current audio
