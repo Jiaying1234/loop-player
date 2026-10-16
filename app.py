@@ -12,7 +12,7 @@ app = Flask(__name__)
 TRACKS_FILE = DOWNLOAD_DIR / "tracks.json"
 
 
-# Read the names saved for downloaded sounds.
+# Read saved names for downloaded sounds.
 def load_track_names() -> dict[str, str]:
     if not TRACKS_FILE.exists():
         return {}
