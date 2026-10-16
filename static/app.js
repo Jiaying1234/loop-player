@@ -90,7 +90,8 @@ deleteTrackButtons.forEach((button) => {
     });
     const result = await response.json();
     if (result.accepted) {
-      window.location.reload();
+      // Remove the deleted sound while keeping delete mode open.
+      button.closest(".track-card").remove();
     } else {
       window.alert(result.message);
     }
