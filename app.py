@@ -49,7 +49,11 @@ def index():
             "filename": path.name,
             "title": names.get(path.name, path.stem.replace("_", " ")),
         }
-        for path in sorted(DOWNLOAD_DIR.glob("*.mp3"))
+        for path in sorted(
+            DOWNLOAD_DIR.glob("*.mp3"),
+            key=lambda audio_path: audio_path.stat().st_mtime,
+            reverse=True,
+        )
     ]
     return render_template("index.html", tracks=tracks)
 

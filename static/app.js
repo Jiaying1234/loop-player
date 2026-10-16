@@ -6,6 +6,24 @@ const urlInput = document.querySelector("#tiktok-url");
 const status = document.querySelector("#status");
 const editButton = document.querySelector("#edit-button");
 const renameForms = document.querySelectorAll(".rename-form");
+const audioPlayers = document.querySelectorAll("audio");
+
+// Pause every other sound when one starts playing.
+audioPlayers.forEach((audio) => {
+  audio.addEventListener("play", () => {
+    audioPlayers.forEach((otherAudio) => {
+      if (otherAudio !== audio) {
+        otherAudio.pause();
+        otherAudio.currentTime = 0;
+      }
+    });
+  });
+
+  // Reset this sound when its own play button is pressed to stop it.
+  audio.addEventListener("pause", () => {
+    audio.currentTime = 0;
+  });
+});
 
 // Show or hide the rename controls.
 editButton.addEventListener("click", () => {
