@@ -68,9 +68,9 @@ M6: search bar to find audio
 
 M7: saved audio can be removed
 
-M8: saved audios can be reordered
+M8: interface similar to tiktok
 
-M9: interface similar to tiktok
+M9: saved audios can be reordered
 
 M10: program can run smoothly on phone
 
