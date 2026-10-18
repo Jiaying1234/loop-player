@@ -53,30 +53,30 @@ Maybe features in V3:
 
 Roadmap(v1):
 
-M1: input to accept tiktok URL on ui
+~~M1: input to accept tiktok URL on ui~~
 
-M2: yt dlp sees URL and converts to MP3 
+~~M2: yt dlp sees URL and converts to MP3~~
 
-M3: MP3 plays on loop (with no noticeable pause)
+~~M3: MP3 plays on loop (with no noticeable pause)~~
 
 ---
 
 Roadmap(v2)
-M4: upon adding audio asks for renaming
+~~M4: upon adding audio asks for renaming~~
 
-M5: saved audios can be renamed
+~~M5: saved audios can be renamed~~
 
-M6: search bar to find audio
+~~M6: search bar to find audio~~
 
-M7: saved audio can be removed
+~~M7: saved audio can be removed~~
 
-M8: interface similar to tiktok
+~~M8: interface similar to tiktok~~
 
-M9: saved audios can be reordered
+~~M9: saved audios can be reordered~~
 
 M10: program can run smoothly on phone
 
-M11: desktop shortcut
+~~M11: desktop shortcut~~
 
 M12: all audios is adjusted to balanced volume
 
