@@ -78,6 +78,8 @@ M10: program can run smoothly on phone
 
 M11: desktop shortcut
 
+M12: all audios is adjusted to balanced volume
+
 Known Issues: 
 -audios are not sorted by latest
 -two audios can be played simultaneously 
