@@ -3,6 +3,8 @@ from pathlib import Path
 import yt_dlp
 from yt_dlp.networking.impersonate import ImpersonateTarget
 
+from audio import normalize_audio
+
 
 DOWNLOAD_DIR = Path(__file__).parent / "downloads"
 
@@ -29,7 +31,9 @@ def download_audio(url: str) -> dict[str, str]:
         info = downloader.extract_info(url, download=True)
 
     video_id = info["id"]
+    filename = f"{video_id}.mp3"
+    normalize_audio(DOWNLOAD_DIR / filename)
     return {
-        "filename": f"{video_id}.mp3",
+        "filename": filename,
         "title": info.get("title") or "TikTok sound",
     }
