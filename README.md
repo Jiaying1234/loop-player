@@ -74,7 +74,7 @@ Roadmap(v2)
 
 ~~M9: saved audios can be reordered~~
 
-M10: program can run smoothly on phone (IN PUBLIC)
+M10: program can run smoothly on phone (AT HOME)
 
 ~~M11: desktop shortcut~~
 
