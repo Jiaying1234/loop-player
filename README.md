@@ -78,13 +78,12 @@ M10: program can run smoothly on phone
 
 ~~M11: desktop shortcut~~
 
-M12: all audios is adjusted to balanced volume
+~~M12: all audios is adjusted to balanced volume~~
 
 M12 uses FFmpeg loudness measurement in LUFS. On first use, the app measures
 the existing MP3 files, uses their median loudness as the shared target, and
 saves that target in `downloads/volume_settings.json`. Newly downloaded audio
-is automatically normalized to the same target. Existing MP3 files are not
-changed.
+is automatically normalized to the same target. 
 
 
 Known Issues: 
