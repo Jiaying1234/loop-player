@@ -94,7 +94,15 @@ Known Issues:
 -downloads can fail on some networks (HTTP 403). try a different network or wait.
 
 Run without VS Code:
-
 - Double-click `run_loop_player.bat` to start the app and open it in Chrome.
 - Create a shortcut to `run_loop_player.bat` and pin that shortcut to the taskbar.
 - Close the command window to stop the app.
+
+Open on a phone:
+
+- Connect the phone and laptop to the same home Wi-Fi network.
+- Start Loop Player using the desktop shortcut or `run_loop_player.bat`.
+- On the laptop, open PowerShell and run `ipconfig`.
+- Find the laptop's `IPv4 Address`, usually similar to `192.168.1.123`.
+- On the phone's Safari browser, open `http://LAPTOP-IP:5000`, for example `http://192.168.1.123:5000`.
+- If Windows asks whether Python can communicate on the network, allow it on private networks.

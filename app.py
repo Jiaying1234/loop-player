@@ -197,4 +197,5 @@ if __name__ == "__main__":
     launched_from_shortcut = bool(os.environ.get("LOOP_PLAYER_CHROME"))
     if launched_from_shortcut:
         threading.Timer(1, open_chrome).start()
-    app.run(debug=not launched_from_shortcut)
+    # Listen on the home network so the phone can open the app.
+    app.run(host="0.0.0.0", port=5000, debug=not launched_from_shortcut)
