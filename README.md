@@ -74,7 +74,7 @@ Roadmap(v2)
 
 ~~M9: saved audios can be reordered~~
 
-M10: program can run smoothly on phone (AT HOME)
+~~M10: program can run smoothly on phone (AT HOME)~~
 
 ~~M11: desktop shortcut~~
 
@@ -105,4 +105,3 @@ Open on a phone:
 - On the laptop, open PowerShell and run `ipconfig`.
 - Find the laptop's `IPv4 Address`, usually similar to `192.168.1.123`.
 - On the phone's Safari browser, open `http://LAPTOP-IP:5000`, for example `http://192.168.1.123:5000`.
-- If Windows asks whether Python can communicate on the network, allow it on private networks.

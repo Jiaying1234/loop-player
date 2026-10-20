@@ -18,6 +18,7 @@ const deleteTrackButtons = document.querySelectorAll(".delete-track-button");
 const playButtons = document.querySelectorAll(".play-button");
 const reorderButton = document.querySelector("#reorder-button");
 const saveOrderButton = document.querySelector("#save-order-button");
+const dragHandles = document.querySelectorAll(".drag-handle");
 
 // Display a duration as minutes and seconds.
 function formatDuration(seconds) {
@@ -30,28 +31,55 @@ function formatDuration(seconds) {
 reorderButton.addEventListener("click", () => {
   document.body.classList.add("reordering");
   trackCards.forEach((card) => {
-    card.draggable = true;
+    card.draggable = false;
   });
 });
 
 let draggedCard;
+let draggedPointerId = null;
 
-// Track the sound currently being dragged.
-trackCards.forEach((card) => {
-  card.addEventListener("dragstart", () => {
-    draggedCard = card;
-    card.classList.add("dragging");
-  });
-  card.addEventListener("dragend", () => {
-    card.classList.remove("dragging");
-  });
-  card.addEventListener("dragover", (event) => {
-    event.preventDefault();
-    if (draggedCard && draggedCard !== card) {
-      const afterCard = event.clientY > card.getBoundingClientRect().top + card.offsetHeight / 2;
-      card.parentNode.insertBefore(draggedCard, afterCard ? card.nextSibling : card);
+// Move a sound with its handle so touch devices can reorder it.
+dragHandles.forEach((handle) => {
+  handle.addEventListener("pointerdown", (event) => {
+    if (!document.body.classList.contains("reordering")) {
+      return;
     }
+    event.preventDefault();
+    draggedCard = handle.closest(".track-card");
+    draggedPointerId = event.pointerId;
+    draggedCard.classList.add("dragging");
   });
+});
+
+// Move the active row while the handle is being held on a touch screen.
+document.addEventListener("pointermove", (event) => {
+  if (!draggedCard || event.pointerId !== draggedPointerId) {
+    return;
+  }
+  event.preventDefault();
+  const target = document.elementFromPoint(event.clientX, event.clientY)?.closest(".track-card");
+  if (target && target !== draggedCard) {
+    const afterCard = event.clientY > target.getBoundingClientRect().top + target.offsetHeight / 2;
+    target.parentNode.insertBefore(draggedCard, afterCard ? target.nextSibling : target);
+  }
+}, {passive: false});
+
+// Finish the reorder when the handle is released.
+document.addEventListener("pointerup", (event) => {
+  if (draggedCard && event.pointerId === draggedPointerId) {
+    draggedCard.classList.remove("dragging");
+    draggedCard = null;
+    draggedPointerId = null;
+  }
+});
+
+// Clean up if the phone cancels the touch gesture.
+document.addEventListener("pointercancel", (event) => {
+  if (draggedCard && event.pointerId === draggedPointerId) {
+    draggedCard.classList.remove("dragging");
+    draggedCard = null;
+    draggedPointerId = null;
+  }
 });
 
 // Save the dragged order and leave reorder mode.

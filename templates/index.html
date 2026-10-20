@@ -75,6 +75,13 @@
             <p class="track-duration" data-duration>--:--</p>
             <audio class="audio-player" loop preload="metadata" src="{{ url_for('audio', filename=track.filename) }}"></audio>
           </div>
+          <!-- Show the touch-friendly drag handle only in reorder mode. -->
+          <button class="drag-handle" type="button" aria-label="Drag {{ track.title }} to reorder">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 5h12M8 12h12M8 19h12"></path>
+              <path d="M4 5h.01M4 12h.01M4 19h.01"></path>
+            </svg>
+          </button>
         </article>
         {% endfor %}
       </section>
